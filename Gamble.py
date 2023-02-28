@@ -1,6 +1,41 @@
 import hashlib
 import random
+import main
 
+# Return user input
+
+
+def server_seed():
+    #generate a random sha256 hash each time player rerun the code
+
+    #can be a randomized hashed value or *see line 15
+    # prehashServerseed = str(random.getrandbits(256))
+    # print("This is a prehash value: " + prehashServerseed)
+
+    prehashServerseed = "85943002341619080928654322842274335146257750056392232559940811297469147320250" #can either be a fixed hashed value
+    print("This is a prehash value: " + prehashServerseed)
+
+    #hashed serverseed
+    server_seed = hashlib.sha256(prehashServerseed.encode('utf-8')).hexdigest()
+    print("This is the server seed: " + server_seed)
+
+
+    expected_server_seed = hashlib.sha256(prehashServerseed.encode('utf-8')).hexdigest()
+
+# XOR the prehash and hashedserver to verify if user taper with it
+    if int(server_seed, 16) ^ int(expected_server_seed, 16) != 0:
+        return False
+    else:
+        print("Seed is not tapered with")
+
+    #for testing purpose
+    server_seed = "85943002341619080928654322842274335146257750056392232559940811297469147320250aa"
+
+    if int(server_seed, 16) ^ int(expected_server_seed, 16) != 0:
+        print("WTF BRO?")
+    else:
+        print("Seed is not tapered with")
+    #test until here
 
 def flip_coin(player_seed, server_seed):
     # Combine player seed and server seed to generate a unique seed for this round
@@ -36,11 +71,16 @@ def verify_result(player_seed, server_seed, result, combined_seed):
     return False
 
 
-# Example usage
+
 player_seed = "mysecretseed"
-server_seed = "supersecureseed"
+
+server_seed = str(server_seed())
 result, combined_seed = flip_coin(player_seed, server_seed)
 print("Result:", result)
+
 print("Combined seed:", combined_seed)
 verified = verify_result(player_seed, server_seed, result, combined_seed)
 print("Result verified:", verified)
+
+
+
