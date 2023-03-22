@@ -3,7 +3,7 @@ import sys
 import ssl 
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-context.load_cert_chain('new.pem','private.key')
+context.load_cert_chain('key/new.pem','key/private.key')
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

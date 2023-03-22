@@ -2,8 +2,8 @@ import socket
 import sys
 import ssl 
 
-context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-context.load_verify_locations('new.pem')
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+context.load_verify_locations('key/new.pem')
 
 server_address = ('localhost', 10000)
 
