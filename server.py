@@ -23,37 +23,29 @@ def handle_client(connection, client_address):
     connected = True
     while connected:
         data = connection.recv(BYTE_RECV)
-        print('received {!r}'.format(data))
-        if data == DISCONNECT_MESSAGE:
+        if data.decode().strip() == DISCONNECT_MESSAGE:
             connected = False
+            connection.close()
+            print(f"[DISCONNECTED] {client_address} disconnected.")
+        elif len(data) != 0:
+            print('received {!r}'.format(data))
     
-    connection.close()
-
-
-
 def start():
-    try:
-        sock.listen(2) #listen to 2 connection, client A and client B
-        print('waiting for a connection')
-        while True:
-            connection, client_address = sock.accept()
-            thread = threading.Thread(target=handle_client, args=(connection, client_address))
-            thread.start()
-            print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")
-    except KeyboardInterrupt:
-        print("Ctrl+C pressed. Closing server socket.")
-        sock.close()
-        sys.exit(0)
-
-
-print("[STARTING] server is starting...")
-start()
-
-
-
-
-
-
+    sock.listen(2) #listen to 2 connection, client A and client B
+    print('waiting for a connection')
+    while True:
+        connection, client_address = sock.accept()
+        thread = threading.Thread(target=handle_client, args=(connection, client_address))
+        thread.start()
+        print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")
+    
+try:
+    print("[STARTING] server is starting...")
+    start()
+except KeyboardInterrupt:
+    print("Ctrl+C pressed. Closing server socket.")
+    sock.close()
+    sys.exit(0)
 
 # while True:
 #     # Wait for a connection
