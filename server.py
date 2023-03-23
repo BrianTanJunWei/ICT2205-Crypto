@@ -4,6 +4,11 @@ import ssl
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain('key/new.pem','key/private.key')
 
+
+context.options |= ssl.OP_NO_TLSv1_3 ## op out of tls 1.3
+context.set_ciphers('ECDHE-ECDSA-AES128-GCM-SHA256:')
+
+
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
