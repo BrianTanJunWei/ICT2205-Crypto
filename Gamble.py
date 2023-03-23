@@ -116,29 +116,35 @@
 
 # code number 2
 
+
 import hashlib
 import random
 
+#takes the nonce, server seed, and client seed as inputs, concatenates them into a string,
+# computes an SHA-512 hash and
+# returns the resulting digest in hexadecimal format.
 def get_roll_hash(nonce, server_seed, client_seed):
     message = str(nonce) + ":" + str(server_seed)
     hmac = hashlib.sha512(message.encode('utf-8'))
     hmac.update(client_seed.encode('utf-8'))
     return hmac.hexdigest()
 
-def get_roll(hash_str):
+def get_roll(hash_str): #result
+    # takes the first 7
     sub_hash = hash_str[:7]
+    #convert them into int & mod them, result to be in 0 to 100%
     num = int(sub_hash, 16)
-    roll = (num % 100000)
-    return 100000 if roll == 0 else roll
+    roll = (num % 10000)
+    return 100.0 if roll == 0 else float(roll) / 100.0
 
 def generate_server_seed():
-    server_seed_choice = input("Enter '1' to use your own server seed or any other characters to generate a random one: ")
-    if server_seed_choice == '1':
-        server_seed = input("Enter your server seed: ")
-    else:
+    # server_seed_choice = input("Enter '1' to use your own server seed or any other characters to generate a random one: ")
+    # if server_seed_choice == '1':
+    #     server_seed = input("Enter your server seed: ")
+    # else:
         server_seed = str(random.getrandbits(512))
         print("This is the server seed: " + server_seed) #will be hidden from player until he decides to reveal
-    return server_seed
+        return server_seed
 
 def generate_client_seed():
     client_seed_choice = input("Enter '1' to use your own client seed or any other characters to generate a random one: ")
@@ -150,6 +156,7 @@ def generate_client_seed():
     return client_seed
 
 def get_roll_and_seeds(nonce, server_seed, client_seed):
+    #generate seed if there is none input
     if server_seed is None:
         server_seed = generate_server_seed()
 
@@ -161,12 +168,24 @@ def get_roll_and_seeds(nonce, server_seed, client_seed):
 
     return roll, server_seed, client_seed
 
-def verify_roll(server_seed, client_seed, nonce, roll):
-    nonce = 5
+def verify_roll(server_seed, client_seed, nonce, roll): #makus implement this plz thanks, let user ownself input all the value
+    # nonce = 0 # testing
     hash_str = get_roll_hash(nonce, server_seed, client_seed)
     return roll == get_roll(hash_str)
 
 
-#server 442412127823989645789120530441736406841700406935165467059976870404102305650788341475276909805758140014108000604641891400996340968832624646424966855164847
-#client 5202988757856915841037713879748868353963222344156654253192916129480174494267243734370341947666511482847246582923260295973659389381883323719504768852484139
-# 41928
+
+
+#server 7568606721039477025273988730392623903635665727836223611337065207590923632826146818635086846148536304983960786723830486883238254666879353976103064727496648
+#client 5495000861733297226453958943252942669778400366030278634093774521290896745526730452504126597379676013244581832661752423153143399549168041323497132898788987
+#result 98.01
+
+#only client, nonce & roll is shown to player unless he reveal then we show all
+
+
+
+
+
+
+
+
