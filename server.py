@@ -7,6 +7,7 @@ SERVER = socket.gethostbyname(socket.gethostname())
 PORT = 10000
 DISCONNECT_MESSAGE = "!DISCONNECT"
 BYTE_RECV = 64
+ACK_TEXT = 'text_received'
 
 
 # Create a TCP/IP socket
@@ -23,12 +24,14 @@ def handle_client(connection, client_address):
     connected = True
     while connected:
         data = connection.recv(BYTE_RECV)
+        print(data)
         if data.decode().strip() == DISCONNECT_MESSAGE:
             connected = False
             connection.close()
             print(f"[DISCONNECTED] {client_address} disconnected.")
         elif len(data) != 0:
             print('received {!r}'.format(data))
+            print(data.decode().strip())
     
 def start():
     sock.listen(2) #listen to 2 connection, client A and client B

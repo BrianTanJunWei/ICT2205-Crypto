@@ -1,6 +1,12 @@
 import socket
 import sys
 
+def send(msg):
+        # Send data
+        message = msg
+        print('sending {!r}'.format(message))
+        sock.sendall(message.encode())
+
 #params
 SERVER = "192.168.1.9" #change according to the localhost ip address
 PORT = 10000
@@ -14,16 +20,10 @@ print('connecting to {} port {}'.format(*server_address))
 sock.connect(server_address)
 
 try:
-
-    def send(msg):
-        # Send data
-        message = msg
-        print('sending {!r}'.format(message))
-        
-        sock.sendall(message.encode())
-    
+    # send("Authenticated")
     connect = True
     while connect:
+
         message = input()
         if message == "!END":
             connect = False
