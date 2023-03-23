@@ -132,8 +132,8 @@ def get_roll(hash_str):
     return 100000 if roll == 0 else roll
 
 def generate_server_seed():
-    choice = input("Enter '1' to use your own server seed or any other characters to generate a random one: ")
-    if choice == '1':
+    server_seed_choice = input("Enter '1' to use your own server seed or any other characters to generate a random one: ")
+    if server_seed_choice == '1':
         server_seed = input("Enter your server seed: ")
     else:
         server_seed = str(random.getrandbits(512))
@@ -141,35 +141,31 @@ def generate_server_seed():
     return server_seed
 
 def generate_client_seed():
-    choice = input("Enter '1' to use your own client seed or any other characters to generate a random one: ")
-    if choice == '1':
+    client_seed_choice = input("Enter '1' to use your own client seed or any other characters to generate a random one: ")
+    if client_seed_choice == '1':
         client_seed = input("Enter your client seed: ")
     else:
         client_seed = str(random.getrandbits(512))
         print("This is the client seed: " + client_seed)
     return client_seed
 
+def get_roll_and_seeds(nonce, server_seed, client_seed):
+    if server_seed is None:
+        server_seed = generate_server_seed()
+
+    if client_seed is None:
+        client_seed = generate_client_seed()
+
+    hash_str = get_roll_hash(nonce, server_seed, client_seed)
+    roll = get_roll(hash_str)
+
+    return roll, server_seed, client_seed
+
 def verify_roll(server_seed, client_seed, nonce, roll):
+    nonce = 5
     hash_str = get_roll_hash(nonce, server_seed, client_seed)
     return roll == get_roll(hash_str)
 
-nonce = input("Enter nonce: ")
-server_seed = generate_server_seed()
-client_seed = generate_client_seed()
-
-hash_str = get_roll_hash(nonce, server_seed, client_seed)
-roll = get_roll(hash_str)
-
-print(f'Roll for nonce {nonce} is {roll}')
-
-# Ask user if they want to verify the result
-choice = input("Do you want to verify the roll? (y/n): ")
-if choice.lower() == 'y':
-    verified = verify_roll(server_seed, client_seed, nonce, roll)
-    if verified:
-        print("Roll verified!")
-    else:
-        print("Roll verification failed!")
 
 #server 442412127823989645789120530441736406841700406935165467059976870404102305650788341475276909805758140014108000604641891400996340968832624646424966855164847
 #client 5202988757856915841037713879748868353963222344156654253192916129480174494267243734370341947666511482847246582923260295973659389381883323719504768852484139
