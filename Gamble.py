@@ -1,40 +1,40 @@
-import hashlib
-import random
-import main
+# import hashlib
+# import random
+# import main
 
 # # Return user input
 #
 #
 #
 #
-def server_seed():
-    #generate a random sha256 hash each time player rerun the code
-
-    #for testing purpose
-    prehashServerseed = "85943002341619080928654322842274335146257750056392232559940811297469147320250" #can either be a fixed hashed value
-    print("This is a prehash value: " + prehashServerseed)
-
-    # can be a randomized hashed value or *see line 15
-    # prehashServerseed = str(random.getrandbits(256))
-    # print("This is a prehash value: " + prehashServerseed)
-
-    #hashed serverseed
-    server_seed = hashlib.sha256(prehashServerseed.encode('utf-8')).hexdigest()
-    print("This is the server seed: " + server_seed)
-
-    #This part is for user to check if the server seed had been modified, usually users will check the server seed online
-    expected_server_seed = hashlib.sha256(prehashServerseed.encode('utf-8')).hexdigest()
-
-    #for testing purpose
-    #server_seed = "85943002341619080928654322842274335146257750056392232559940811297469147320250"
-
-    # XOR the prehash and hashedserver to verify if user taper with it, this is best if we implement it online
-    if int(server_seed, 16) ^ int(expected_server_seed, 16) != 0:
-       print("Seed is tapered with")
-    else:
-        print("Seed is not tapered with")
-
-    return server_seed
+# def server_seed():
+#     #generate a random sha256 hash each time player rerun the code
+#
+#     #for testing purpose
+#     prehashServerseed = "85943002341619080928654322842274335146257750056392232559940811297469147320250" #can either be a fixed hashed value
+#     print("This is a prehash value: " + prehashServerseed)
+#
+#     # can be a randomized hashed value or *see line 15
+#     # prehashServerseed = str(random.getrandbits(256))
+#     # print("This is a prehash value: " + prehashServerseed)
+#
+#     #hashed serverseed
+#     server_seed = hashlib.sha256(prehashServerseed.encode('utf-8')).hexdigest()
+#     print("This is the server seed: " + server_seed)
+#
+#     #This part is for user to check if the server seed had been modified, usually users will check the server seed online
+#     expected_server_seed = hashlib.sha256(prehashServerseed.encode('utf-8')).hexdigest()
+#
+#     #for testing purpose
+#     #server_seed = "85943002341619080928654322842274335146257750056392232559940811297469147320250"
+#
+#     # XOR the prehash and hashedserver to verify if user taper with it, this is best if we implement it online
+#     if int(server_seed, 16) ^ int(expected_server_seed, 16) != 0:
+#        print("Seed is tapered with")
+#     else:
+#         print("Seed is not tapered with")
+#
+#     return server_seed
 #     #test until here
 #
 #
@@ -117,9 +117,10 @@ def server_seed():
 # code number 2
 
 import hashlib
+import random
 
 def get_roll_hash(nonce, server_seed, client_seed):
-    message = str(nonce) + str(server_seed)
+    message = str(nonce) + ":" + str(server_seed)
     hmac = hashlib.sha512(message.encode('utf-8'))
     hmac.update(client_seed.encode('utf-8'))
     return hmac.hexdigest()
@@ -127,31 +128,49 @@ def get_roll_hash(nonce, server_seed, client_seed):
 def get_roll(hash_str):
     sub_hash = hash_str[:7]
     num = int(sub_hash, 16)
-    if num is None:
-        raise ValueError('Invalid hash')
     roll = (num % 100000)
     return 100000 if roll == 0 else roll
 
-def client_seed():
+def generate_server_seed():
+    choice = input("Enter '1' to use your own server seed or any other characters to generate a random one: ")
+    if choice == '1':
+        server_seed = input("Enter your server seed: ")
+    else:
+        server_seed = str(random.getrandbits(512))
+        print("This is the server seed: " + server_seed) #will be hidden from player until he decides to reveal
+    return server_seed
+
+def generate_client_seed():
     choice = input("Enter '1' to use your own client seed or any other characters to generate a random one: ")
     if choice == '1':
-        user_seed = input("Enter your client seed: ")
-        # Hash the user input to generate the client seed
-        client_seed = hashlib.sha256(user_seed.encode('utf-8')).hexdigest()
+        client_seed = input("Enter your client seed: ")
     else:
-        # Generate a random client seed
-        prehashClientseed = str(random.getrandbits(256))
-        client_seed = hashlib.sha256(prehashClientseed.encode('utf-8')).hexdigest()
+        client_seed = str(random.getrandbits(512))
         print("This is the client seed: " + client_seed)
-
-
     return client_seed
 
-nonce = '2'
-server_seed = str(server_seed())
-client_seed = str(client_seed())
+def verify_roll(server_seed, client_seed, nonce, roll):
+    hash_str = get_roll_hash(nonce, server_seed, client_seed)
+    return roll == get_roll(hash_str)
+
+nonce = input("Enter nonce: ")
+server_seed = generate_server_seed()
+client_seed = generate_client_seed()
 
 hash_str = get_roll_hash(nonce, server_seed, client_seed)
 roll = get_roll(hash_str)
 
 print(f'Roll for nonce {nonce} is {roll}')
+
+# Ask user if they want to verify the result
+choice = input("Do you want to verify the roll? (y/n): ")
+if choice.lower() == 'y':
+    verified = verify_roll(server_seed, client_seed, nonce, roll)
+    if verified:
+        print("Roll verified!")
+    else:
+        print("Roll verification failed!")
+
+#server 442412127823989645789120530441736406841700406935165467059976870404102305650788341475276909805758140014108000604641891400996340968832624646424966855164847
+#client 5202988757856915841037713879748868353963222344156654253192916129480174494267243734370341947666511482847246582923260295973659389381883323719504768852484139
+# 41928
