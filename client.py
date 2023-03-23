@@ -2,7 +2,7 @@ import socket
 import sys
 
 #params
-SERVER = "192.168.1.9" #change according to the localhost ip address
+SERVER = "192.168.10.108" #change according to the localhost ip address
 PORT = 10000
 DISCONNECT_MESSAGE = "!DISCONNECT"
 

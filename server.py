@@ -21,15 +21,22 @@ sock.bind(server_address)
 def handle_client(connection, client_address):
     print(f"[NEW CONNECTION] {client_address} connected.")
     connected = True
-    while connected:
-        data = connection.recv(BYTE_RECV)
-        if data.decode().strip() == DISCONNECT_MESSAGE:
-            connected = False
-            connection.close()
-            print(f"[DISCONNECTED] {client_address} disconnected.")
-        elif len(data) != 0:
-            print('received {!r}'.format(data))
-    
+    file_name = f"{client_address[0]}_{client_address[1]}.txt"
+    with open(file_name, "w") as f:
+        f.write("Hello, world!")
+        while connected:
+            data = connection.recv(BYTE_RECV)
+            if data.decode().strip() == DISCONNECT_MESSAGE:
+                connected = False
+                connection.close()
+                f.close()
+                print(f"[DISCONNECTED] {client_address} disconnected. File written: {file_name}")
+            elif len(data) != 0:
+                f.write(data.decode())
+
+
+                
+
 def start():
     sock.listen(2) #listen to 2 connection, client A and client B
     print('waiting for a connection')
