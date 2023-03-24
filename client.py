@@ -23,8 +23,18 @@ try:
     # send("Authenticated")
     connect = True
     while connect:
+        print("Welcome To Coin Flip!")
+        print("Heads for rolls <= 50")
+        print("Tails for rolls > 50\n")
+
+        print("Enter '1' To Start New Game")
+        print("Enter '2' To Verify Roll")
+        print("Enter '3' To Change Client Seed")
+        print("Enter '4' To End The Program")
+        #print("This is changeSeed: " + changeSeed)
+        
         message = input()
-        if message == "!END":
+        if message == "4":
             connect = False
             send(DISCONNECT_MESSAGE)
         send(message)
@@ -40,6 +50,7 @@ try:
     #     data = sock.recv(16)
     #     amount_received += len(data)
     #     print('received {!r}'.format(data))
+    
 except KeyboardInterrupt:
     print("Ctrl+C pressed. Closing client socket.")
     send(DISCONNECT_MESSAGE)

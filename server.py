@@ -1,6 +1,7 @@
 import socket
 import threading
 import sys
+import main
 import time
 
 #params
@@ -25,6 +26,11 @@ print('waiting for a connection')
 def handle_client(connection, client_address):
     print(f"[NEW CONNECTION] {client_address} connected.")
     connected = True
+    nonce = 0
+    changeSeed = "No need change"
+    client_seed = "GoingToBeChanged"
+    server_seed = "GoingToBeChanged"
+    status = True
     while connected:
         data = connection.recv(BYTE_RECV)
         print(data)
@@ -33,8 +39,16 @@ def handle_client(connection, client_address):
             connection.close()
             print(f"[DISCONNECTED] {client_address} disconnected.")
         elif len(data) != 0:
-            print('received {!r}'.format(data))
-            print(data.decode().strip())
+            print("testing")
+            if data.decode().strip() == "1":
+                print("entered 1")
+                nonce = main.get_nonce(nonce, status)[0]
+                server_seed = main.generate_server_seed(server_seed)
+                client_seed, changeSeed = main.generate_client_seed(client_seed, changeSeed)
+                roll, server_seed, client_seed = main.get_roll_and_seeds(nonce, server_seed, client_seed)
+                print(f'\nRoll for nonce {nonce} is {roll}')
+
+                pass
     return
 
 try:
