@@ -4,7 +4,7 @@ import sys
 def send(msg):
         # Send data
         message = msg
-        print('sending {!r}'.format(message))
+        # print('sending {!r}'.format(message))
         sock.sendall(message.encode())
 
 #params
@@ -21,23 +21,38 @@ sock.connect(server_address)
 
 try:
     # send("Authenticated")
+    print("Welcome To Coin Flip!")
+    print("Enter '1' To Start New Game")
+    print("Enter '2' To Verify Roll")
+    print("Enter '3' To Change Client Seed")
+    print("Enter '4' To End The Program")
     connect = True
     while connect:
-        print("Welcome To Coin Flip!")
-        print("Heads for rolls <= 50")
-        print("Tails for rolls > 50\n")
-
-        print("Enter '1' To Start New Game")
-        print("Enter '2' To Verify Roll")
-        print("Enter '3' To Change Client Seed")
-        print("Enter '4' To End The Program")
         #print("This is changeSeed: " + changeSeed)
-        
-        message = input()
-        if message == "4":
+        message = input("Please choose an option: ")
+        if message == "1":
+            answer = True
+            send(message)
+            message = input("Input your guess (heads/tails): ")
+            while answer:
+                if message == "heads" or message == "tails":
+                    answer = False
+                else:
+                     print("error input please try again!")
+                     message = input("Input your guess (head/tails): ") 
+            send(message)
+            from_server = sock.recv(4096).decode()
+            print("\n"+from_server.strip())
+            from_server = sock.recv(4096).decode()
+            print(from_server.strip())
+            print("\nTo continue input 1 again.\n")
+
+        elif message == "4":
             connect = False
             send(DISCONNECT_MESSAGE)
-        send(message)
+
+        
+        
     
     print('closing socket')
     sock.close()

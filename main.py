@@ -30,7 +30,7 @@ def get_roll(hash_str): #result
 def generate_server_seed(server_seed):
         if server_seed == "GoingToBeChanged":
             server_seed = str(random.getrandbits(512)) #will be hidden from player until he decides to reveal
-        print("Server seed: " + server_seed)
+        # print("Server seed: " + server_seed)
         return server_seed
 
 def generate_client_seed(client_seed, changeSeed):
@@ -41,7 +41,7 @@ def generate_client_seed(client_seed, changeSeed):
     elif changeSeed == "User want to change":
         client_seed = input("Enter your client seed: ")
 
-    print(f"Client seed: {client_seed}\n")
+    # print(f"Client seed: {client_seed}\n")
     return client_seed, changeSeed
 
 def get_roll_and_seeds(nonce, server_seed, client_seed):
