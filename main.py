@@ -75,12 +75,12 @@ def verify_roll(): #makus implement this plz thanks, let user ownself input all 
 
 
 
-status = True
-nonce = 0
-changeSeed = "No need change"
-client_seed = "GoingToBeChanged"
-server_seed = "GoingToBeChanged"
-gameOn = True
+# status = True
+# nonce = 0
+# changeSeed = "No need change"
+# client_seed = "GoingToBeChanged"
+# server_seed = "GoingToBeChanged"
+# gameOn = True
 # print("Welcome To Coin Flip!")
 # print("Heads for rolls <= 50")
 # print("Tails for rolls > 50\n")

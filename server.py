@@ -47,8 +47,13 @@ def handle_client(connection, client_address):
                 client_seed, changeSeed = main.generate_client_seed(client_seed, changeSeed)
                 roll, server_seed, client_seed = main.get_roll_and_seeds(nonce, server_seed, client_seed)
                 print(f'\nRoll for nonce {nonce} is {roll}')
-
-                pass
+                status = False
+                if roll <= 50:
+                    print("The result of the coin flip is heads!\n")
+                if roll > 50:
+                    print("The result of the coin flip is tails!\n")
+    #          Append variables to text file
+    #          Need to store client seed, server seed, nonce, roll, result.
     return
 
 try:
