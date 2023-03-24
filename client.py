@@ -23,7 +23,6 @@ try:
     # send("Authenticated")
     connect = True
     while connect:
-
         message = input()
         if message == "!END":
             connect = False
@@ -43,6 +42,7 @@ try:
     #     print('received {!r}'.format(data))
 except KeyboardInterrupt:
     print("Ctrl+C pressed. Closing client socket.")
+    send(DISCONNECT_MESSAGE)
     sock.close()
     sys.exit(0)
 
