@@ -29,7 +29,8 @@ def get_roll(hash_str): #result
 
 def generate_server_seed(server_seed):
         if server_seed == "GoingToBeChanged":
-            server_seed = str(random.getrandbits(512)) #will be hidden from player until he decides to reveal
+            server_seed = str(random.getrandbits(512))
+            server_seed = hashlib.sha512(server_seed.encode('utf-8')).hexdigest() #will be hidden from player until he decides to reveal
         print("Server seed: " + server_seed)
         return server_seed
 
@@ -37,6 +38,7 @@ def generate_client_seed(client_seed, changeSeed):
     if changeSeed == "No need change":
         if client_seed == "GoingToBeChanged":
             client_seed = str(random.getrandbits(512))
+            client_seed = hashlib.sha512(client_seed.encode('utf-8')).hexdigest()
         changeSeed = "Wait Until User Change"
     elif changeSeed == "User want to change":
         client_seed = input("Enter your client seed: ")
@@ -57,11 +59,17 @@ def verify_roll(): #makus implement this plz thanks, let user ownself input all 
     verifyNonce = input("Enter Nonce: ")
     hash_str = get_roll_hash(verifyNonce, verifyServerSeed, verifyClientSeed)
     roll = get_roll(hash_str)
+    result = "Havent decide"
     print(f'\nRoll is {roll}')
     if roll <= 50:
-        print("The result of the coin flip is heads!\n")
+        result = "Heads"
+        print(f"The result of the coin flip is {result}!\n")
     if roll > 50:
-        print("The result of the coin flip is tails!\n")
+        result = "Tails"
+        print(f"The result of the coin flip is {result}!\n")
+
+
+
 
 
 #server 7568606721039477025273988730392623903635665727836223611337065207590923632826146818635086846148536304983960786723830486883238254666879353976103064727496648
@@ -69,9 +77,6 @@ def verify_roll(): #makus implement this plz thanks, let user ownself input all 
 #result 98.01
 
 #only client, nonce & roll is shown to player unless he reveal then we show all
-
-
-
 status = True
 nonce = 0
 changeSeed = "No need change"
@@ -96,10 +101,13 @@ while gameOn:
             roll, server_seed, client_seed = get_roll_and_seeds(nonce, server_seed, client_seed)
             print(f'\nRoll for nonce {nonce} is {roll}')
             status = False
+            results = "Havent decide"
             if roll <= 50:
-                print("The result of the coin flip is heads!\n")
+                results = "Heads"
+                print(f"The result of the coin flip is {results}!\n")
             if roll > 50:
-                print("The result of the coin flip is tails!\n")
+                results = "Tails"
+                print(f"The result of the coin flip is {results}!\n")
             #Append variables to text file
             # Need to store client seed, server seed, nonce, roll, result.
         elif clientDecision == 2:
