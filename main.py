@@ -99,13 +99,10 @@ while gameOn:
             roll, server_seed, client_seed = get_roll_and_seeds(nonce, server_seed, client_seed)
             print(f'\nRoll for nonce {nonce} is {roll}')
             status = False
-            results = "Havent decide"
             if roll <= 50:
-                results = "Heads"
-                print(f"The result of the coin flip is {results}}!\n")
+                print("The result of the coin flip is heads!\n")
             if roll > 50:
-                results = "Tails"
-                print(f"The result of the coin flip is {results}!\n")
+                print("The result of the coin flip is tails!\n")
             #Append variables to text file
             # Need to store client seed, server seed, nonce, roll, result.
         elif clientDecision == 2:
