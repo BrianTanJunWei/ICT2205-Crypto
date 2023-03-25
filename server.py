@@ -1,7 +1,13 @@
 import socket
 import threading
 import sys
+<<<<<<< Updated upstream
 import json
+=======
+import main
+import time
+import FileHandler as FH
+>>>>>>> Stashed changes
 
 #params
 SERVER = socket.gethostbyname(socket.gethostname())
@@ -22,9 +28,55 @@ sock.bind(server_address)
 def handle_client(connection, client_address):
     print(f"[NEW CONNECTION] {client_address} connected.")
     connected = True
+<<<<<<< Updated upstream
     file_name = f"{client_address[0]}_{client_address[1]}.txt"
     with open(file_name, "w") as f:
         f.write("Hello, world!")
+=======
+    nonce = 0
+    changeSeed = "No need change"
+    client_seed = "GoingToBeChanged"
+    server_seed = "GoingToBeChanged"
+    status = True
+    #Open file
+    file_name = f"{client_address[0]}_{client_address[1]}.txt"
+    with open(file_name, "a") as f:
+        
+        while connected:
+            data = connection.recv(BYTE_RECV)
+            print(data)
+        
+            if data.decode().strip() == DISCONNECT_MESSAGE:
+                connected = False
+                connection.close()
+                print(f"[DISCONNECTED] {client_address} disconnected.")
+                FH.convert_text_to_json(file_name, "Result.json")
+            elif len(data) != 0:
+                print("testing")
+                if data.decode().strip() == "1":
+                    print("entered 1")
+                    nonce = main.get_nonce(nonce, status)[0]
+                    server_seed = main.generate_server_seed(server_seed)
+                    client_seed, changeSeed = main.generate_client_seed(client_seed, changeSeed)
+                    roll, server_seed, client_seed = main.get_roll_and_seeds(nonce, server_seed, client_seed)
+                    print(f'\nRoll for nonce {nonce} is {roll}')
+                    f.write("Client Seed "+client_seed + "|\n")
+                    #f.write("Server Seed " +server_seed + "|\n")
+                    status = False
+                    if roll <= 50:
+                        print("The result of the coin flip is heads!\n")
+                    if roll > 50:
+                        print("The result of the coin flip is tails!\n")
+        #          Append variables to text file
+        #          Need to store client seed, server seed, nonce, roll, result.
+                if data.decode().strip() == "2":
+                    f.write("Client Seed "+client_seed + "|\n")
+                    #f.write("Server Seed " +server_seed + "|\n")
+                    # variables Decision/Client_seed/Server_seed/nounce/Result
+                    # should be appending continously
+                    
+        return 
+>>>>>>> Stashed changes
 
         while connected:
             data = connection.recv(BYTE_RECV)
@@ -81,6 +133,7 @@ except KeyboardInterrupt:
     sock.close()
     sys.exit(0)
 
+<<<<<<< Updated upstream
 # while True:
 #     # Wait for a connection
 #     print('waiting for a connection')
@@ -100,3 +153,7 @@ except KeyboardInterrupt:
 #     finally:
 #     # Clean up the connection
 #         connection.close()
+=======
+print("[STARTING] server is starting...")
+
+>>>>>>> Stashed changes
