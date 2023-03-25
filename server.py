@@ -78,15 +78,18 @@ def handle_client(connection, client_address):
 
                 #Open file
                 with open(file_name, "a") as f:
-                    x = {'Client Seed' :client_seed,
-                        'Server Seed ' : server_seed, 
-                        'Client Answer': client_answer, 
-                        'Server Answer':server_answer, 
-                        'Nounce' : str(nonce)}
-                    # f.write("Client Answer "+client_answer +"|\n")
-                    # f.write("Server Answer "+server_answer +"|\n")
-                    # f.write("Nounce " + str(nonce) + "|\n")
-                    json.dump(x,f)
+                    # x = {'Client Seed' :client_seed,
+                    #     'Server Seed ' : server_seed, 
+                    #     'Client Answer': client_answer, 
+                    #     'Server Answer':server_answer, 
+                    #     'Nounce' : str(nonce)}
+                    f.write("Client Seed "+client_seed +"|\n")
+                    f.write("Client Seed "+server_seed +"|\n")
+                    f.write("Client Answer "+client_answer +"|\n")
+                    f.write("Server Answer "+server_answer +"|\n")
+                    f.write("Nounce " + str(nonce) + "|\n")
+                    
+                    # json.dump(x,f)
                     f.write('\n')
                     f.close()
 
@@ -101,6 +104,7 @@ def handle_client(connection, client_address):
     #          Append variables to text file
     #          Need to store client seed, server seed, nonce, roll, result.
             elif data == "2":
+                FH.send_file(client_address, file_name)
                 pass
             elif data == "3":
                 changeSeed = "User want to change"
@@ -113,14 +117,14 @@ def handle_client(connection, client_address):
 
 try:
     while True:
-        # try:
+         try:
             connection, client_address = sock.accept()
             thread = threading.Thread(target=handle_client, args=(connection, client_address), daemon = True)
             thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")
-        # except socket.timeout:
-            # print("Timeout")
-            # pass
+         except socket.timeout:
+             print("Timeout")
+             pass
 
 except KeyboardInterrupt:
     print("Ctrl+C pressed. Closing server socket.")

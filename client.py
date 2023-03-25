@@ -8,7 +8,7 @@ def send(msg):
         sock.sendall(message.encode())
 
 #params
-SERVER = "192.168.56.1" #change according to the localhost ip address
+SERVER = "192.168.10.108" #change according to the localhost ip address
 PORT = 10000
 DISCONNECT_MESSAGE = "!DISCONNECT"
 
