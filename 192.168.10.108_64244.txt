@@ -1,0 +1,20 @@
+Client Seed 9f6a93b11df920fd04099c6a2f7aadb3e0da0c53d3c7a1f938f4e722e3af4eb9|
+Server Seed 2a5c8a555255b1624f57deb05d156424afabf7d5d9c9fa75515655db34dff9d6|
+Client Answer tails|
+Server Answer tails|
+Nounce 0|
+Client Seed 9f6a93b11df920fd04099c6a2f7aadb3e0da0c53d3c7a1f938f4e722e3af4eb9|
+Server Seed fd476dd7c5415c7f78eaab36adba47075da318fc075a0c4d488ef5db22759f0d|
+Client Answer tails|
+Server Answer heads|
+Nounce 1|
+Client Seed 9f6a93b11df920fd04099c6a2f7aadb3e0da0c53d3c7a1f938f4e722e3af4eb9|
+Server Seed e09d2769ec1d2b735ccbd55172ac1012745776425b36fe9a39877f6f47378522|
+Client Answer tails|
+Server Answer heads|
+Nounce 2|
+Client Seed 9f6a93b11df920fd04099c6a2f7aadb3e0da0c53d3c7a1f938f4e722e3af4eb9|
+Server Seed 362dc79af07c01412c5f98e6dea13f1bf376d4b055bfbcb47352e3ad809f08e8|
+Client Answer tails|
+Server Answer heads|
+Nounce 3|

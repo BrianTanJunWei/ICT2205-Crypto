@@ -38,7 +38,7 @@ def handle_client(connection, client_address):
     client_seed = "GoingToBeChanged"
     server_seed = "GoingToBeChanged"
 #Open file
-    file_name = f"{client_address[0]}_{client_address[1]}.txt"
+    file_name = f"{client_address[0]}_{client_address[1]}.json" #set to .json/.txt for simple viewing
     with open(file_name, "a") as f:
 
         while connected:
@@ -47,7 +47,7 @@ def handle_client(connection, client_address):
                 connected = False
                 connection.close()
                 print(f"[DISCONNECTED] {client_address} disconnected.")
-                FH.convert_text_to_json(file_name, "Result.json")# having issues
+                #FH.convert_text_to_json(file_name, "Result.json") #should be able to remove this conversion
             elif len(data) != 0:
                 if data == "1":
                     client_answer = ""
@@ -62,7 +62,7 @@ def handle_client(connection, client_address):
                     status = False
                     f.write("Client Seed "+client_seed + "|\n")
                     f.write("Server Seed " +server_seed + "|\n")
-                    #f.write("Nounce " +nonce + "|\n")
+                    
                     data = connection.recv(BYTE_RECV).decode().strip()
                     if data =="heads" or data =="tails":
                         client_answer = data
@@ -79,6 +79,7 @@ def handle_client(connection, client_address):
                     print(f"Client answer:{client_answer}")
                     f.write("Client Answer "+client_answer +"|\n")
                     f.write("Server Answer "+server_answer +"|\n")
+                    f.write("Nounce " + str(nonce) + "|\n")
                     if client_answer != server_answer:
                         connection.sendall("player have lost".encode())
                         # print("player have lost")
