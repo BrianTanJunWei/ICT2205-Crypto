@@ -30,6 +30,8 @@ def get_roll(hash_str): #result
 def generate_server_seed(server_seed):
         if server_seed == "GoingToBeChanged":
             server_seed = str(random.getrandbits(512)) #will be hidden from player until he decides to reveal
+        server_seed = hashlib.sha256(server_seed.encode('utf-8')).hexdigest()
+        # print("This is the server seed: " + server_seed)
         # print("Server seed: " + server_seed)
         return server_seed
 
@@ -37,9 +39,11 @@ def generate_client_seed(client_seed, changeSeed):
     if changeSeed == "No need change":
         if client_seed == "GoingToBeChanged":
             client_seed = str(random.getrandbits(512))
+        client_seed = hashlib.sha256(client_seed.encode('utf-8')).hexdigest()
+        print("This is the client seed: " + client_seed)
         changeSeed = "Wait Until User Change"
-    elif changeSeed == "User want to change":
-        client_seed = input("Enter your client seed: ")
+    # elif changeSeed == "User want to change":
+    #     client_seed = input("Enter your client seed: ")
 
     # print(f"Client seed: {client_seed}\n")
     return client_seed, changeSeed
@@ -56,11 +60,14 @@ def verify_roll(): #makus implement this plz thanks, let user ownself input all 
     verifyServerSeed = input("Enter Server Seed: ")
     verifyNonce = input("Enter Nonce: ")
     hash_str = get_roll_hash(verifyNonce, verifyServerSeed, verifyClientSeed)
+    result = "ToBeChanged"
     roll = get_roll(hash_str)
     print(f'\nRoll is {roll}')
     if roll <= 50:
-        print("The result of the coin flip is heads!\n")
+        result = "head"
+        print(f"The result of the coin flip is {result}!\n")
     if roll > 50:
+        result = "tail"
         print("The result of the coin flip is tails!\n")
 
 

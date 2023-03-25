@@ -45,15 +45,18 @@ def handle_client(connection, client_address):
             if data == "1":
                 client_answer = ""
                 server_answer = ""
-                data = connection.recv(BYTE_RECV).decode().strip()
-                if data =="heads" or data =="tails":
-                    client_answer = data
+
                 nonce = main.get_nonce(nonce, status)[0]
                 server_seed = main.generate_server_seed(server_seed)
                 client_seed, changeSeed = main.generate_client_seed(client_seed, changeSeed)
                 roll, server_seed, client_seed = main.get_roll_and_seeds(nonce, server_seed, client_seed)
-                # print(f'\nRoll for nonce {nonce} is {roll}')
+                connection.sendall(f"Client seed: {client_seed}\nNonce: {nonce}\n".encode())
+                # print(f'\nRoll for nonce {nonce} is {roll}')data = connection.recv(BYTE_RECV).decode().strip()
                 status = False
+                data = connection.recv(BYTE_RECV).decode().strip()
+                if data =="heads" or data =="tails":
+                    client_answer = data
+                    
                 if roll <= 50:
                     server_answer = "heads"
                     connection.sendall("The result of the coin flip is heads!\n".encode())
@@ -62,6 +65,8 @@ def handle_client(connection, client_address):
                     server_answer = "tails"
                     connection.sendall("The result of the coin flip is tails!\n".encode())
                     print("The result of the coin flip is tails!\n")
+                print(f"Server answer:{server_answer}")
+                print(f"Client answer:{client_answer}")
                 if client_answer != server_answer:
                     connection.sendall("player have lost".encode())
                     # print("player have lost")
@@ -71,6 +76,15 @@ def handle_client(connection, client_address):
                     # print("The result of the coin flip is tails!\n")
     #          Append variables to text file
     #          Need to store client seed, server seed, nonce, roll, result.
+            elif data == "2":
+                pass
+            elif data == "3":
+                changeSeed = "User want to change"
+                data = connection.recv(BYTE_RECV).decode().strip()
+                print(data)
+                client_seed = data
+                # client_seed = main.generate_client_seed(client_seed, changeSeed)[0]
+                changeSeed = "User has changed"
     return
 
 try:
