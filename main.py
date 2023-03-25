@@ -15,7 +15,7 @@ def get_nonce(nonce, status):
 
 def get_roll_hash(nonce, server_seed, client_seed):
     message = str(nonce) + ":" + str(server_seed)
-    hmac = hashlib.sha512(message.encode('utf-8'))
+    hmac = hashlib.sha256(message.encode('utf-8'))
     hmac.update(client_seed.encode('utf-8'))
     return hmac.hexdigest()
 
