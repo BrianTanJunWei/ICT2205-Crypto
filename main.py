@@ -1,6 +1,5 @@
 import hashlib
 import random
-import json
 
 #takes the nonce, server seed, and client seed as inputs, concatenates them into a string,
 # computes an SHA-512 hash and
@@ -16,7 +15,7 @@ def get_nonce(nonce, status):
 
 def get_roll_hash(nonce, server_seed, client_seed):
     message = str(nonce) + ":" + str(server_seed)
-    hmac = hashlib.sha512(message.encode('utf-8'))
+    hmac = hashlib.sha256(message.encode('utf-8'))
     hmac.update(client_seed.encode('utf-8'))
     return hmac.hexdigest()
 
@@ -31,18 +30,22 @@ def get_roll(hash_str): #result
 def generate_server_seed(server_seed):
         if server_seed == "GoingToBeChanged":
             server_seed = str(random.getrandbits(512)) #will be hidden from player until he decides to reveal
-        print("Server seed: " + server_seed)
+        server_seed = hashlib.sha256(server_seed.encode('utf-8')).hexdigest()
+        # print("This is the server seed: " + server_seed)
+        # print("Server seed: " + server_seed)
         return server_seed
 
 def generate_client_seed(client_seed, changeSeed):
     if changeSeed == "No need change":
         if client_seed == "GoingToBeChanged":
             client_seed = str(random.getrandbits(512))
+        client_seed = hashlib.sha256(client_seed.encode('utf-8')).hexdigest()
+        print("This is the client seed: " + client_seed)
         changeSeed = "Wait Until User Change"
-    elif changeSeed == "User want to change":
-        client_seed = input("Enter your client seed: ")
+    # elif changeSeed == "User want to change":
+    #     client_seed = input("Enter your client seed: ")
 
-    print(f"Client seed: {client_seed}\n")
+    # print(f"Client seed: {client_seed}\n")
     return client_seed, changeSeed
 
 def get_roll_and_seeds(nonce, server_seed, client_seed):
@@ -57,39 +60,16 @@ def verify_roll(): #makus implement this plz thanks, let user ownself input all 
     verifyServerSeed = input("Enter Server Seed: ")
     verifyNonce = input("Enter Nonce: ")
     hash_str = get_roll_hash(verifyNonce, verifyServerSeed, verifyClientSeed)
+    result = "ToBeChanged"
     roll = get_roll(hash_str)
     print(f'\nRoll is {roll}')
     if roll <= 50:
-        print("The result of the coin flip is heads!\n")
+        result = "head"
+        print(f"The result of the coin flip is {result}!\n")
     if roll > 50:
+        result = "tail"
         print("The result of the coin flip is tails!\n")
 
-
-def convert_text_to_json(input_file, output_file):
-    # Open the input file and read the lines
-    with open(input_file, "r") as f:
-        lines = f.readlines()
-
-    # Create a list to hold the dictionaries
-    data = []
-
-    # Iterate over the lines and parse them into dictionaries
-    for line in lines:
-        # Parse the line into fields
-        fields = line.strip().split("|")
-
-        # Create a dictionary with the fields as keys and values
-        d = {
-            "Client Seed": fields[0],
-            # Add more fields as needed
-        }
-
-        # Append the dictionary to the list
-        data.append(d)
-
-    # Write the list of dictionaries to the output file as JSON
-    with open(output_file, "w") as f:
-        json.dump(data, f, indent=4)
 
 
 
