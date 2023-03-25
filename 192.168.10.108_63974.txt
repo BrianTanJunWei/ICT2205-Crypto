@@ -1,0 +1,16 @@
+Client Seed 3009947888094be51565955ab0674275f2112ce5e62070363d3d6cd9bbd8dbdb|
+Server Seed 818246b2ac2426e7b725fab3d09f7911b553d79b45c44a569ffc3efa980bf3ca|
+Client Answer heads|
+Server Answer tails|
+Client Seed 3009947888094be51565955ab0674275f2112ce5e62070363d3d6cd9bbd8dbdb|
+Server Seed 4bde2f656173014034bdf3bdcc795a785c7e787839f772fbafdd9a0f67371f6d|
+Client Answer heads|
+Server Answer heads|
+Client Seed 3009947888094be51565955ab0674275f2112ce5e62070363d3d6cd9bbd8dbdb|
+Server Seed 9a8b3e6b695e21194a16d683a7efbea6d7faa70d8fc00980d01403c0334296fa|
+Client Answer tails|
+Server Answer heads|
+Client Seed 3009947888094be51565955ab0674275f2112ce5e62070363d3d6cd9bbd8dbdb|
+Server Seed be98ed3bc82522906130af2c70d23f2afa3e545280ab98a5ab94fd91fe823fd6|
+Client Answer heads|
+Server Answer heads|
