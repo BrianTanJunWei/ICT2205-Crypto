@@ -115,10 +115,8 @@ def handle_client(connection, client_address):
                         # print("The result of the coin flip is tails!\n")
         #          Append variables to text file
         #          Need to store client seed, server seed, nonce, roll, result.
-                elif data == "2":
-                    pass
                     # pass
-                elif data == "3":
+                elif data == "2":
                     changeSeed = "User want to change"
                     data = connection.recv(BYTE_RECV).decode().strip()
                     print(data)

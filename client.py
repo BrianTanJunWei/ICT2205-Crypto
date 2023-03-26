@@ -31,9 +31,8 @@ try:
         try:
             print("Welcome To Coin Flip!")
             print("Enter '1' To Start New Game")
-            print("Enter '2' To Verify Roll")
-            print("Enter '3' To Change Client Seed")
-            print("Enter '4' To End The Program")
+            print("Enter '2' To Change Client Seed")
+            print("Enter '3' To End The Program")
             #print("This is changeSeed: " + changeSeed)
             message = input("\nPlease choose an option: ")
             if message == "1":
@@ -49,7 +48,7 @@ try:
                         answer = False
                     else:
                         print("error input please try again!")
-                        message = input("Input your guess (head/tails): ")
+                        message = input("Input your guess (heads/tails): ")
                 send(message)
                 from_server = sock.recv(4096).decode()
                 print("\n"+from_server.strip())
@@ -57,12 +56,10 @@ try:
                 print(from_server.strip())
                 print("\nTo continue input 1 again.\n")
             elif message == "2":
-                pass
-            elif message == "3":
                 send(message)
                 message = input("Enter your client seed: ")
                 send(message)
-            elif message == "4":
+            elif message == "3":
                 connect = False
                 send(DISCONNECT_MESSAGE)
                 if start_game == True:
