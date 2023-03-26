@@ -13,7 +13,7 @@ def send(msg):
         c_soc.sendall(message.encode())
 
 #params
-SERVER = "192.168.56.1" #change according to the localhost ip address
+SERVER = "172.18.192.1" #change according to the localhost ip address
 PORT = 10000
 DISCONNECT_MESSAGE = "!DISCONNECT"
 start_game = False

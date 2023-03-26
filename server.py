@@ -10,7 +10,7 @@ context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain('key/certificate.crt','key/private.key')
 
 #params
-SERVER = socket.gethostbyname(socket.gethostname())
+# SERVER = socket.gethostbyname(socket.gethostname())
 PORT = 10000
 DISCONNECT_MESSAGE = "!DISCONNECT"
 BYTE_RECV = 64
@@ -20,7 +20,7 @@ ACK_TEXT = 'text_received'
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to the port
-server_address = (SERVER, PORT)
+server_address = ('0.0.0.0', PORT)
 print('starting up on {} port {}'.format(*server_address))
 # Listen for incoming connections
 sock.bind(server_address)
