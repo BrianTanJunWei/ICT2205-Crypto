@@ -3,9 +3,11 @@ import threading
 import sys
 import json
 import main
-import time
-import time
+import ssl
 import os
+
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+context.load_cert_chain('key/certificate.crt','key/private.key')
 
 #params
 SERVER = socket.gethostbyname(socket.gethostname())
@@ -26,7 +28,7 @@ sock.settimeout(5)
 sock.listen(2) #listen to 2 connection, client A and client B
 print('waiting for a connection')
 
-
+s_sock = context.wrap_socket(sock, server_side=True)
 
 def handle_client(connection, client_address):
     print(f"[NEW CONNECTION] {client_address} connected.")
@@ -131,7 +133,7 @@ def handle_client(connection, client_address):
 try:
     while True:
         try:
-            connection, client_address = sock.accept()
+            connection, client_address = s_sock.accept()
             thread = threading.Thread(target=handle_client, args=(connection, client_address), daemon = True)
             thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")

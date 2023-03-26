@@ -1,27 +1,31 @@
 import socket
 import sys
-import os
-import main
 import json
+import ssl
+
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+context.load_verify_locations('key/certificate.crt')
 
 def send(msg):
         # Send data
         message = msg
         # print('sending {!r}'.format(message))
-        sock.sendall(message.encode())
+        c_soc.sendall(message.encode())
 
 #params
-SERVER = "192.168.1.9" #change according to the localhost ip address
+SERVER = "192.168.56.1" #change according to the localhost ip address
 PORT = 10000
 DISCONNECT_MESSAGE = "!DISCONNECT"
 start_game = False
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+c_soc=context.wrap_socket(sock,server_hostname='localhost')
 # Connect the socket to the port where the server is listening
 server_address = (SERVER,PORT)
 print('connecting to {} port {}'.format(*server_address))
-sock.connect(server_address)
+c_soc.connect(server_address)
 
 try:
     # send("Authenticated")
@@ -38,7 +42,7 @@ try:
             if message == "1":
                 start_game = True
                 send(message)
-                from_server = sock.recv(4096).decode()
+                from_server = c_soc.recv(4096).decode()
                 print(from_server.strip())
                 message = input("Input your guess (heads/tails): ")
                 # check if player correct input the correct answer
@@ -50,9 +54,9 @@ try:
                         print("error input please try again!")
                         message = input("Input your guess (heads/tails): ")
                 send(message)
-                from_server = sock.recv(4096).decode()
+                from_server = c_soc.recv(4096).decode()
                 print("\n"+from_server.strip())
-                from_server = sock.recv(4096).decode()
+                from_server = c_soc.recv(4096).decode()
                 print(from_server.strip())
                 print("\nTo continue input 1 again.\n")
             elif message == "2":
@@ -64,8 +68,8 @@ try:
                 send(DISCONNECT_MESSAGE)
                 if start_game == True:
                     # Write File in binary
-                    data_len = int.from_bytes(sock.recv(4), byteorder='big')
-                    data = sock.recv(data_len)
+                    data_len = int.from_bytes(c_soc.recv(4), byteorder='big')
+                    data = c_soc.recv(data_len)
                     json_data = json.loads(data)
                     with open('client-file.json', 'w') as file:
                         json.dump(json_data ,file,indent=4)
@@ -81,12 +85,12 @@ try:
         
     
     print('closing socket')
-    sock.close()
+    c_soc.close()
     
 except KeyboardInterrupt:
     print("Ctrl+C pressed. Closing client socket.")
     send(DISCONNECT_MESSAGE)
-    sock.close()
+    c_soc.close()
     sys.exit(0)
 
     
