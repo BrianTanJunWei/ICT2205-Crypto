@@ -84,7 +84,7 @@ def handle_client(connection, client_address):
                     #     'Server Answer':server_answer, 
                     #     'Nounce' : str(nonce)}
                     f.write("Client Seed "+client_seed +"|\n")
-                    f.write("Client Seed "+server_seed +"|\n")
+                    f.write("Server Seed "+server_seed +"|\n")
                     f.write("Client Answer "+client_answer +"|\n")
                     f.write("Server Answer "+server_answer +"|\n")
                     f.write("Nounce " + str(nonce) + "|\n")
