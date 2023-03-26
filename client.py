@@ -54,17 +54,7 @@ try:
             print(from_server.strip())
             print("\nTo continue input 1 again.\n")
         elif message == "2":
-            if os.path.isfile('client-file.json'):
-                print("The last 10 result is being displayed...\n")
-                with open('client-file.json', 'r') as file:
-                        data = json.load(file)
-                last_result = data[-10:]
-                for line in last_result:
-                    main.verify_roll(line["Client Seed"],line["Server Seed"],line["Nounce"])
-                    print(f"You have chosen: " + line["Client Answer"])
-                    print("\n")
-            else:
-                print("No result file to verify")
+            pass
         elif message == "3":
              send(message)
              message = input("Enter your client seed: ")
