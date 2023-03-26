@@ -93,7 +93,7 @@ def handle_client(connection, client_address):
                     data = []
                     # with open(file_name, "a") as f:
                 new_data = {'Client Seed' :client_seed,
-                    'Server Seed ' : server_seed, 
+                    'Server Seed' : server_seed, 
                     'Client Answer': client_answer, 
                     'Server Answer':server_answer, 
                     'Nounce' : str(nonce)}

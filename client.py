@@ -1,5 +1,7 @@
 import socket
 import sys
+import os
+import main
 import json
 
 def send(msg):
@@ -52,7 +54,17 @@ try:
             print(from_server.strip())
             print("\nTo continue input 1 again.\n")
         elif message == "2":
-            pass
+            if os.path.isfile('client-file.json'):
+                print("The last 10 result is being displayed...\n")
+                with open('client-file.json', 'r') as file:
+                        data = json.load(file)
+                last_result = data[-10:]
+                for line in last_result:
+                    main.verify_roll(line["Client Seed"],line["Server Seed"],line["Nounce"])
+                    print(f"You have chosen: " + line["Client Answer"])
+                    print("\n")
+            else:
+                print("No result file to verify")
         elif message == "3":
              send(message)
              message = input("Enter your client seed: ")
@@ -64,7 +76,6 @@ try:
             data_len = int.from_bytes(sock.recv(4), byteorder='big')
             data = sock.recv(data_len)
             json_data = json.loads(data)
-            print(json_data)
             with open('client-file.json', 'w') as file:
                  json.dump(json_data ,file,indent=4)
 
@@ -77,15 +88,6 @@ try:
     
     print('closing socket')
     sock.close()
-
-    # Look for the response
-    # amount_received = 0
-    # amount_expected = len(message)
-    
-    # while amount_received < amount_expected:
-    #     data = sock.recv(16)
-    #     amount_received += len(data)
-    #     print('received {!r}'.format(data))
     
 except KeyboardInterrupt:
     print("Ctrl+C pressed. Closing client socket.")
