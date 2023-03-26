@@ -54,23 +54,6 @@ def get_roll_and_seeds(nonce, server_seed, client_seed):
 
     return roll, server_seed, client_seed
 
-<<<<<<< HEAD
-# def verify_roll(verifyClientSeed,verifyServerSeed,verifyNonce): #makus implement this plz thanks, let user ownself input all the value
-#     #Download text file containing all results.
-#     # verifyClientSeed = input("Enter Client Seed: ")
-#     # verifyServerSeed = input("Enter Server Seed: ")
-#     # verifyNonce = input("Enter Nonce: ")
-#     hash_str = get_roll_hash(verifyNonce, verifyServerSeed, verifyClientSeed)
-#     result = "ToBeChanged"
-#     roll = get_roll(hash_str)
-#     print(f'\nRoll is {roll}')
-#     if roll <= 50:
-#         result = "head"
-#         print(f"The result of the coin flip is {result}!")
-#     if roll > 50:
-#         result = "tail"
-#         print("The result of the coin flip is tails!")
-=======
 def verify_roll(verifyClientSeed,verifyServerSeed,verifyNonce): #makus implement this plz thanks, let user ownself input all the value
     #Download text file containing all results.
     # verifyClientSeed = input("Enter Client Seed: ")
@@ -86,7 +69,6 @@ def verify_roll(verifyClientSeed,verifyServerSeed,verifyNonce): #makus implement
     if roll > 50:
         result = "tail"
         print("The result of the coin flip is tails!")
->>>>>>> YuXiang
 
 
 
