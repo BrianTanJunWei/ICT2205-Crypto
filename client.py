@@ -1,39 +1,26 @@
 import socket
-<<<<<<< Updated upstream
-import ssl 
-=======
 import sys
 import json
->>>>>>> Stashed changes
 
-context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-context.load_verify_locations('key/new.pem')
+def send(msg):
+        # Send data
+        message = msg
+        # print('sending {!r}'.format(message))
+        sock.sendall(message.encode())
 
-server_address = ('localhost', 10000)
+#params
+SERVER = "192.168.56.1" #change according to the localhost ip address
+PORT = 10000
+DISCONNECT_MESSAGE = "!DISCONNECT"
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-c_soc=context.wrap_socket(sock,server_hostname='localhost')
 # Connect the socket to the port where the server is listening
-print(f'connecting to {server_address[0]} port {server_address[1]}')
-c_soc.connect(server_address)
+server_address = (SERVER,PORT)
+print('connecting to {} port {}'.format(*server_address))
+sock.connect(server_address)
 
 try:
-<<<<<<< Updated upstream
-    # Send data
-    message = b'This is the message. It will be repeated.'
-    print(f'sending {message!r}')
-    c_soc.sendall(message)
-    # Look for the response
-    amount_received = 0
-    amount_expected = len(message)
-    while amount_received < amount_expected:
-        data = c_soc.recv(1024)
-        amount_received += len(data)
-        print(f'received {data!r}')
-finally:
-=======
     # send("Authenticated")
 
     connect = True
@@ -88,6 +75,23 @@ finally:
 
         
     
->>>>>>> Stashed changes
     print('closing socket')
     sock.close()
+
+    # Look for the response
+    # amount_received = 0
+    # amount_expected = len(message)
+    
+    # while amount_received < amount_expected:
+    #     data = sock.recv(16)
+    #     amount_received += len(data)
+    #     print('received {!r}'.format(data))
+    
+except KeyboardInterrupt:
+    print("Ctrl+C pressed. Closing client socket.")
+    send(DISCONNECT_MESSAGE)
+    sock.close()
+    sys.exit(0)
+
+    
+    

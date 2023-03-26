@@ -1,60 +1,32 @@
 import socket
-<<<<<<< Updated upstream
-import ssl 
-
-context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-context.load_cert_chain('key/new.pem','key/private.key')
-
-
-# context.options |= ssl.OP_NO_TLSv1_3 ## op out of tls 1.3
-# context.set_ciphers('ECDHE-ECDSA-AES128-GCM-SHA256:')
-=======
 import threading
 import sys
 import json
 import main
 import time
-import FileHandler as FH
-import main
 import time
 import os
->>>>>>> Stashed changes
 
+#params
+SERVER = socket.gethostbyname(socket.gethostname())
+PORT = 10000
+DISCONNECT_MESSAGE = "!DISCONNECT"
+BYTE_RECV = 64
+ACK_TEXT = 'text_received'
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to the port
-server_address = ('localhost', 10000)
-print(f'starting up on {server_address[0]} port {server_address[1]}')
-sock.bind(server_address)
-
+server_address = (SERVER, PORT)
+print('starting up on {} port {}'.format(*server_address))
 # Listen for incoming connections
+sock.bind(server_address)
+# sock.settimeout(5)
 sock.listen(2) #listen to 2 connection, client A and client B
+print('waiting for a connection')
 
-s_sock = context.wrap_socket(sock, server_side=True)
 
-<<<<<<< Updated upstream
-while True:
-    # Wait for a connection
-    print('waiting for a connection')
-    connection, client_address = s_sock.accept()
-    try:
-        print('connection from', client_address)
-        # Receive the data in small chunks and retransmit it
-        while True:
-            data = connection.recv(1024)
-            print(f'received {data!r}')
-            if data:
-                print('sending data back to the client')
-                connection.sendall(data)
-            else:
-                print('no data from ', client_address)
-            break
-    finally:
-    # Clean up the connection
-        connection.close()
-=======
 
 def handle_client(connection, client_address):
     print(f"[NEW CONNECTION] {client_address} connected.")
@@ -172,4 +144,3 @@ except KeyboardInterrupt:
 
 print("[STARTING] server is starting...")
 
->>>>>>> Stashed changes
