@@ -9,11 +9,10 @@ context.load_verify_locations('key/certificate.crt')
 def send(msg):
         # Send data
         message = msg
-        # print('sending {!r}'.format(message))
         c_soc.sendall(message.encode())
 
 #params
-SERVER = "172.18.192.1" #change according to the localhost ip address
+SERVER = "192.168.56.1" #change according to the localhost ip address
 PORT = 10000
 DISCONNECT_MESSAGE = "!DISCONNECT"
 start_game = False
@@ -37,14 +36,13 @@ try:
             print("Enter '1' To Start New Game")
             print("Enter '2' To Change Client Seed")
             print("Enter '3' To End The Program")
-            #print("This is changeSeed: " + changeSeed)
             message = input("\nPlease choose an option: ")
             if message == "1":
                 start_game = True
                 send(message)
                 from_server = c_soc.recv(4096).decode()
                 print(from_server.strip())
-                message = input("Input your guess (heads/tails): ")
+                message = input("\nInput your guess (heads/tails): ")
                 # check if player correct input the correct answer
                 answer = True
                 while answer:
@@ -61,7 +59,7 @@ try:
                 print("\nTo continue input 1 again.\n")
             elif message == "2":
                 send(message)
-                message = input("Enter your client seed: ")
+                message = input("\nEnter your client seed: ")
                 send(message)
             elif message == "3":
                 connect = False

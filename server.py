@@ -10,7 +10,8 @@ context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain('key/certificate.crt','key/private.key')
 
 #params
-# SERVER = socket.gethostbyname(socket.gethostname())
+SERVER = socket.gethostbyname(socket.gethostname())
+SERVER_NETWORK='0.0.0.0' #Use this when connecting over the network 
 PORT = 10000
 DISCONNECT_MESSAGE = "!DISCONNECT"
 BYTE_RECV = 64
@@ -20,12 +21,12 @@ ACK_TEXT = 'text_received'
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to the port
-server_address = ('0.0.0.0', PORT)
+server_address = (SERVER, PORT)
 print('starting up on {} port {}'.format(*server_address))
 # Listen for incoming connections
 sock.bind(server_address)
 sock.settimeout(5)
-sock.listen(2) #listen to 2 connection, client A and client B
+sock.listen(2)
 print('waiting for a connection')
 
 s_sock = context.wrap_socket(sock, server_side=True)
@@ -45,7 +46,6 @@ def handle_client(connection, client_address):
             data = connection.recv(BYTE_RECV).decode().strip()
             if data == DISCONNECT_MESSAGE:
                 if os.path.isfile(file_name):
-                    # connection.sendall("ok".encode())
                     with open(file_name, 'rb') as file:
                         data = file.read()
                         connection.sendall(len(data).to_bytes(4, byteorder='big'))
@@ -67,10 +67,7 @@ def handle_client(connection, client_address):
                     client_seed, changeSeed = main.generate_client_seed(client_seed, changeSeed)
                     roll, server_seed, client_seed = main.get_roll_and_seeds(nonce, server_seed, client_seed)
                     connection.sendall(f"Client seed: {client_seed}\nNonce: {nonce}\n".encode())
-                    # print(f'\nRoll for nonce {nonce} is {roll}')data = connection.recv(BYTE_RECV).decode().strip()
                     status = False
-                    # f.write("Client Seed "+client_seed + "|\n")
-                    # f.write("Server Seed " +server_seed + "|\n")
                     
                     data = connection.recv(BYTE_RECV).decode().strip()
                     if data =="heads" or data =="tails":
@@ -89,7 +86,6 @@ def handle_client(connection, client_address):
 
                     #Open file
                     if os.path.isfile(file_name):
-                    # connection.sendall("ok".encode())
                         with open(file_name, 'r') as file:
                             data = json.load(file)
                     else:
@@ -103,27 +99,18 @@ def handle_client(connection, client_address):
                     data.append(new_data)
                     with open(file_name, 'w') as f:
                         json.dump(data, f,indent=4)
-                        #     json.dump(x,f,indent=4)
-                        #     f.write('\n')
-                        #     f.close()
 
 
                     if client_answer != server_answer:
-                        connection.sendall("player have lost".encode())
-                        # print("player have lost")
+                        connection.sendall("player have LOST!".encode())
                     else:
-                        connection.sendall("player have won".encode())
+                        connection.sendall("player have WON!".encode())
                     
-                        # print("The result of the coin flip is tails!\n")
-        #          Append variables to text file
-        #          Need to store client seed, server seed, nonce, roll, result.
-                    # pass
                 elif data == "2":
                     changeSeed = "User want to change"
                     data = connection.recv(BYTE_RECV).decode().strip()
                     print(data)
                     client_seed = data
-                    # client_seed = main.generate_client_seed(client_seed, changeSeed)[0]
                     changeSeed = "User has changed"
         except Exception as exc:
             print(exc)
@@ -138,13 +125,10 @@ try:
             thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")
         except socket.timeout:
-            # print("Timeout")
             pass
 
 except KeyboardInterrupt:
     print("Ctrl+C pressed. Closing server socket.")
     sock.close()
     sys.exit(0)
-
-print("[STARTING] server is starting...")
 
