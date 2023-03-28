@@ -72,7 +72,7 @@ def handle_client(connection, client_address):
                     data = connection.recv(BYTE_RECV).decode().strip()
                     if data =="heads" or data =="tails":
                         client_answer = data
-                        
+                    connection.sendall((f"Roll result: {roll}").encode())    
                     if roll <= 50:
                         server_answer = "heads"
                         connection.sendall("The result of the coin flip is heads!\n".encode())
