@@ -21,7 +21,7 @@ ACK_TEXT = 'text_received'
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to the port
-server_address = (SERVER, PORT)
+server_address = (SERVER_NETWORK, PORT)
 print('starting up on {} port {}'.format(*server_address))
 # Listen for incoming connections
 sock.bind(server_address)

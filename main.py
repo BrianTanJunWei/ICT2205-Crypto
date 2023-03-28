@@ -30,7 +30,7 @@ def get_roll(hash_str): #result
 def generate_server_seed(server_seed):
         if server_seed == "GoingToBeChanged":
             server_seed = str(random.getrandbits(512)) #will be hidden from player until he decides to reveal
-        server_seed = hashlib.sha256(server_seed.encode('utf-8')).hexdigest()
+            server_seed = hashlib.sha256(server_seed.encode('utf-8')).hexdigest()
         return server_seed
 
 def generate_client_seed(client_seed, changeSeed):
